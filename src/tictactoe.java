@@ -7,8 +7,8 @@ class Fdemo extends Frame implements ActionListener {
     Button newGame;
     Label statusLabel;
 
-    int turn = 0; // even = O, odd = X
-    int l = 70;
+    int turn = 0; // even = O's turn odd = X's turn
+   boolean gameOver = false; //to track if the game has ended
 
     Fdemo() {
         setLayout(null);
@@ -66,6 +66,9 @@ class Fdemo extends Frame implements ActionListener {
             return;
         }
 
+        //if the game is over gameOver=true, ignore all clicks on the X/O buttons
+        if (gameOver) return;
+
         // Handle game buttons
         for (int i = 0; i < 9; i++) {
             if (e.getSource() == b[i] && b[i].getLabel().equals("")) {
@@ -79,12 +82,18 @@ class Fdemo extends Frame implements ActionListener {
 
     //Reset the game
     private void resetGame() {
-        for (Button btn : b) btn.setLabel("");
+        for (Button btn : b) {
+            btn.setLabel("");
+            btn.setEnabled(true); //re-enable the buttons for a new game
+        }
         statusLabel.setText("");
         turn = 0;
+        gameOver = false; //set to false to allow another game
     }
 
-    // Check for winner
+    /**
+     * Called to check for a winner, when a button is clicked
+     */
     private void checkWinner() {
         int[][] wins = {
             {0,1,2}, {3,4,5}, {6,7,8}, // rows
@@ -100,6 +109,7 @@ class Fdemo extends Frame implements ActionListener {
             if (!s1.equals("") && s1.equals(s2) && s2.equals(s3)) {
                 String winner = s1.equals("O") ? "Player 1" : "Player 2";
                 statusLabel.setText(winner + " wins!");
+                gameOver = true;
                 disableButtons();
                 return;
             }
@@ -113,7 +123,10 @@ class Fdemo extends Frame implements ActionListener {
                 break;
             }
         }
-        if (allFilled) statusLabel.setText("It's a draw!");
+        if (allFilled) {
+            statusLabel.setText("It's a draw!");
+        gameOver = true;
+        }
     }
 
     private void disableButtons() {
