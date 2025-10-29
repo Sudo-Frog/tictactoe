@@ -1,22 +1,16 @@
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Class to create and manage the GUI window on run
- */
-class Fdemo extends Frame implements ActionListener{
+class Fdemo extends Frame implements ActionListener {
 
-    //Create array for the buttons
-    Button b[] = new Button[9]; //Gameplay Buttons
-    Button b1; //New Game Button
+    Button[] b = new Button[9];
+    Button newGame;
+    Label statusLabel;
 
-    int k=0, x=8, y=28;
-    int a = 0; //O and X
-    int p1,p2,p3,p4,p5,p6,p7,p8,p9 = 0;
+    int turn = 0; // even = O, odd = X
     int l = 70;
 
-    //creating the GUI to play our game of TicTacToe
-Fdemo() {
+    Fdemo() {
         setLayout(null);
         setSize(800, 600);
         setLocation(400, 100);
@@ -25,340 +19,108 @@ Fdemo() {
 
         int k = 0, x = 8, y = 28;
 
-        // Create 9 TicTacToe buttons
-        for (int i = 1; i <= 3; i++) {
-            for (int j = 1; j <= 3; j++) {
-                b[k] = new Button();
-                b[k].setSize(100, 100);
-                b[k].setLocation(x, y);
-                b[k].setFont(new Font("", Font.BOLD, 40));
-                b[k].setBackground(Color.orange);
-                b[k].setForeground(Color.black);
-                b[k].addActionListener(this);
-                add(b[k]);
-                k++;
-                x += 100;
-            }
-            x = 8;
-            y += 100;
+        //Create the 9 buttons
+        for (int i = 0; i < 9; i++) {
+            b[i] = new Button("");
+            b[i].setSize(100, 100);
+            b[i].setLocation(x, y);
+            b[i].setFont(new Font("", Font.BOLD, 40));
+            b[i].setBackground(Color.orange);
+            b[i].setForeground(Color.black);
+            b[i].addActionListener(this);
+            add(b[i]);
+
+            x += 100;
+            if ((i + 1) % 3 == 0) { x = 8; y += 100; }
         }
 
-        // New Game button
-        b1 = new Button("New Game");
-        b1.setSize(150, 40);
-        b1.setLocation(500, 300);
-        b1.setFont(new Font("", Font.BOLD, 20));
-        b1.setBackground(Color.orange);
-        b1.setForeground(Color.black);
-        b1.addActionListener(this);
-        add(b1);
+        //Create the New Game button
+        newGame = new Button("New Game");
+        newGame.setSize(150, 40);
+        newGame.setLocation(500, 300);
+        newGame.setFont(new Font("", Font.BOLD, 20));
+        newGame.setBackground(Color.orange);
+        newGame.setForeground(Color.black);
+        newGame.addActionListener(this);
+        add(newGame);
 
-        // Show frame *after* adding components
+        // Create the status label for victories and such
+        statusLabel = new Label("");
+        statusLabel.setSize(300, 40);
+        statusLabel.setLocation(500, 250);
+        statusLabel.setFont(new Font("", Font.BOLD, 18));
+        statusLabel.setForeground(Color.white);
+        add(statusLabel);
+
         setVisible(true);
-
-        // Force repaint after display to ensure AWT colors apply
         validate();
         repaint();
     }
 
-    
+    // Handle all button clicks
+    public void actionPerformed(ActionEvent e) {
 
-    /**
-     * Method to perform actions on buttons
-     */
-    public void actionPerformed(ActionEvent e){
-        if(e.getSource() == b1){
-            for(int i=0; i<=8; i++){
-                b[i].setLabel("");
-            }
-            //restart the game
-            p1=0; p2=0; p3=0;p4=0;p5=0;p6=0;p7=0;p8=0;p9=0;
+        // Handle "New Game" button event
+        if (e.getSource() == newGame) {
+            resetGame(); //call newGame() function
+            return;
         }
 
-        		// For the 9 buttons
-		
-		if(e.getSource()==b[0] &&  p1==0){
-			
-			if(a%2==0){
-				b[0].setLabel("O"); p1++; a++;
-			}
-			else{
-				b[0].setLabel("X"); p1++; a++;
-			}
-				
-		}
-		if(e.getSource()==b[1] &&  p2==0){
-			
-			if(a%2==0){
-				b[1].setLabel("O"); p2++; a++;
-			}
-			else{
-				b[1].setLabel("X"); p2++; a++;
-			}
-				
-		}
-		if(e.getSource()==b[2] &&  p3==0){
-			
-			if(a%2==0){
-				b[2].setLabel("O"); p3++; a++;
-			}
-			else{
-				b[2].setLabel("X"); p3++; a++;
-			}
-				
-		}
-		if(e.getSource()==b[3] &&  p4==0){
-			
-			if(a%2==0){
-				b[3].setLabel("O"); p4++; a++;
-			}
-			else{
-				b[3].setLabel("X"); p4++; a++;
-			}
-				
-		}
-		if(e.getSource()==b[4] &&  p5==0){
-			
-			if(a%2==0){
-				b[4].setLabel("O"); p5++; a++;
-			}
-			else{
-				b[4].setLabel("X"); p5++; a++;
-			}
-				
-		}
-		if(e.getSource()==b[5] &&  p6==0){
-			
-			if(a%2==0){
-				b[5].setLabel("O"); p6++; a++;
-			}
-			else{
-				b[5].setLabel("X"); p6++; a++;
-			}
-				
-		}
-		if(e.getSource()==b[6] &&  p7==0){
-			
-			if(a%2==0){
-				b[6].setLabel("O"); p7++; a++;
-			}
-			else{
-				b[6].setLabel("X"); p7++; a++;
-			}
-				
-		}
-		if(e.getSource()==b[7] &&  p8==0){
-			
-			if(a%2==0){
-				b[7].setLabel("O"); p8++; a++;
-			}
-			else{
-				b[7].setLabel("X"); p8++; a++;
-			}
-				
-		}
-		if(e.getSource()==b[8] &&  p9==0){
-			
-			if(a%2==0){
-				b[8].setLabel("O"); p9++; a++;
-			}
-			else{
-				b[8].setLabel("X"); p9++; a++;
-			}
-				
-		}
+        // Handle game buttons
+        for (int i = 0; i < 9; i++) {
+            if (e.getSource() == b[i] && b[i].getLabel().equals("")) {
+                b[i].setLabel(turn % 2 == 0 ? "O" : "X");
+                turn++;
+                checkWinner();
+                break;
+            }
+        }
+    }
 
-        		// Winning conditions
-		
-		Font f = new Font("",Font.BOLD,20);
-		
-		if(b[0].getLabel()==b[1].getLabel() && b[0].getLabel()==b[2].getLabel()){
-			
-			if(b[0].getLabel()=="O"){
-				
-				Label p1 = new Label("Player 1 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}
-			
-			if(b[0].getLabel()=="X"){
-				
-				Label p1 = new Label("Player 2 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}			
-		}
-		else if(b[3].getLabel()==b[4].getLabel() && b[4].getLabel()==b[5].getLabel()){
-			
-			if(b[3].getLabel()=="O"){
-				
-				Label p1 = new Label("Player 1 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}
-			
-			if(b[3].getLabel()=="X"){
-				
-				Label p1 = new Label("Player 2 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}			
-		}
-		else if(b[6].getLabel()==b[7].getLabel() && b[6].getLabel()==b[8].getLabel()){
-			
-			if(b[6].getLabel()=="O"){
-				
-				Label p1 = new Label("Player 1 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}
-			
-			if(b[6].getLabel()=="X"){
-				
-				Label p1 = new Label("Player 2 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}			
-		}
-		else if(b[0].getLabel()==b[3].getLabel() && b[0].getLabel()==b[6].getLabel()){
-			
-			if(b[0].getLabel()=="O"){
-				
-				Label p1 = new Label("Player 1 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}
-			
-			if(b[0].getLabel()=="X"){
-				
-				Label p1 = new Label("Player 2 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}			
-		}
-		else if(b[1].getLabel()==b[4].getLabel() && b[1].getLabel()==b[7].getLabel()){
-			
-			if(b[1].getLabel()=="O"){
-				
-				Label p1 = new Label("Player 1 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}
-			
-			if(b[1].getLabel()=="X"){
-				
-				Label p1 = new Label("Player 2 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}			
-		}
-		else if(b[2].getLabel()==b[5].getLabel() && b[5].getLabel()==b[8].getLabel()){
-			
-			if(b[2].getLabel()=="O"){
-				
-				Label p1 = new Label("Player 1 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}
-			
-			if(b[2].getLabel()=="X"){
-				
-				Label p1 = new Label("Player 2 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}			
-		}
-		else if(b[0].getLabel()==b[4].getLabel() && b[0].getLabel()==b[8].getLabel()){
-			
-			if(b[0].getLabel()=="O"){
-				
-				Label p1 = new Label("Player 1 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}
-			
-			if(b[0].getLabel()=="X"){
-				
-				Label p1 = new Label("Player 2 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}			
-		}
-		else if(b[2].getLabel()==b[4].getLabel() && b[2].getLabel()==b[6].getLabel()){
-			
-			if(b[2].getLabel()=="O"){
-				
-				Label p1 = new Label("Player 1 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}
-			
-			if(b[2].getLabel()=="X"){
-				
-				Label p1 = new Label("Player 2 wins");
-				p1.setSize(150,50);
-				p1.setLocation(320,l);
-				p1.setFont(f);
-				add(p1);
-				l+=50;
-			}			
-		}
+    //Reset the game
+    private void resetGame() {
+        for (Button btn : b) btn.setLabel("");
+        statusLabel.setText("");
+        turn = 0;
+    }
 
-}
-}
+    // Check for winner
+    private void checkWinner() {
+        int[][] wins = {
+            {0,1,2}, {3,4,5}, {6,7,8}, // rows
+            {0,3,6}, {1,4,7}, {2,5,8}, // cols
+            {0,4,8}, {2,4,6}           // diagonals
+        };
 
-/**
- * 
- * @param args
- */
-public class tictactoe {
-    public static void main(String[] args)
-    {
-        Fdemo f = new Fdemo();
+        for (int[] combo : wins) {
+            String s1 = b[combo[0]].getLabel();
+            String s2 = b[combo[1]].getLabel();
+            String s3 = b[combo[2]].getLabel();
+
+            if (!s1.equals("") && s1.equals(s2) && s2.equals(s3)) {
+                String winner = s1.equals("O") ? "Player 1" : "Player 2";
+                statusLabel.setText(winner + " wins!");
+                disableButtons();
+                return;
+            }
+        }
+
+        // Draw condition
+        boolean allFilled = true;
+        for (Button btn : b) {
+            if (btn.getLabel().equals("")) {
+                allFilled = false;
+                break;
+            }
+        }
+        if (allFilled) statusLabel.setText("It's a draw!");
+    }
+
+    private void disableButtons() {
+        for (Button btn : b) btn.removeActionListener(this);
+    }
+
+    public static void main(String[] args) {
+        new Fdemo();
     }
 }
